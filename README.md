@@ -72,7 +72,7 @@ bs.runTask(tasks)
 ### copyFn( srcglob, dest ) : Promise<void>
 
 Copies a glob of files to a destination, flattening the output tree.
-To copy a folder without flattening, use `spawn('fsync')` instead.
+To copy a folder without flattening, use `spawn('rsync ...')` instead.
 
 
 ---
