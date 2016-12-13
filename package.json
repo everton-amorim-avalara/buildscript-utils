@@ -1,0 +1,26 @@
+{
+  "name": "buildscript-utils",
+  "version": "1.0.0",
+  "description": "I am a hipster and I don't need gulp!",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wkrueger/buildscript-utils.git"
+  },
+  "author": "Willian Krueger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wkrueger/buildscript-utils/issues"
+  },
+  "homepage": "https://github.com/wkrueger/buildscript-utils#readme",
+  "dependencies": {
+    "glob": "^7.1.1",
+    "request": "^2.79.0",
+    "sudo": "^1.0.3",
+    "through2": "^2.0.3",
+    "yargs": "^6.5.0"
+  }
+}
