@@ -5,6 +5,7 @@ const fs = require('fs')
 const yargs = require('yargs')
 const path = require('path')
 const glob = require('glob')
+require('colors')
 
 /**
  * Promisify: converts node-style callback to a promise
@@ -44,7 +45,7 @@ function prepend(text) {
 
 /**
  * Spawns process, pipes to stdout and stderr, returns promise which
- * resolves when process finishes 
+ * resolves when process finishes
  */
 exports.spawn = function spawn(cmd, cwd, processCb) {
     console.log('spawn'.yellow, cmd)
@@ -117,7 +118,7 @@ exports.copyFn = function copyFn( _srcglob, _dest ) {
                 return Promise.all(all)
             })
         })
-    }, Promise.resolve() )      
+    }, Promise.resolve() )
 }
 
 
@@ -151,12 +152,12 @@ exports.requestP = function(reqparams) {
                     return rej({ message })
                 }
                 else rej(body)
-            }            
-            if (reqparams.method === 'POST' && typeof body !== 'object') 
+            }
+            if (reqparams.method === 'POST' && typeof body !== 'object')
                 return rej(String(body));
             res(body||{})
-        })            
-    }) 
+        })
+    })
 }
 
 // -- the Runner -- //
