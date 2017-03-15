@@ -53,10 +53,16 @@ exports.spawn = function spawn(cmd, cwd, processCb) {
     var split = cmd.split(' ')
     if (split[0] == 'sudo') {
         isSudo = true
-        split.unshift
+        split.unshift()
     }
     var path = split[0]
     if (path.charAt(0) === '.') path = require('path').resolve(path)
+    if (process.platform === 'win32') {
+        if (/node_modules\/\.bin/.test(path) && !String(path).endsWith('.cmd')) {
+            path += '.cmd'
+        }
+    }
+
     split.shift()
     return new Promise( (resolve,reject) => {
         var opts = undefined
@@ -74,10 +80,11 @@ exports.spawn = function spawn(cmd, cwd, processCb) {
         }
         let out = ps.stdout
         let err = ps.stderr
+        /*
         if (!yargs.argv.o) {
             out = out.pipe(prepend('> '))
             err = err.pipe(prepend('err> '))
-        }
+        }*/
         out.pipe(process.stdout)
         err.pipe(process.stderr)
         ps.on('close', () => {
