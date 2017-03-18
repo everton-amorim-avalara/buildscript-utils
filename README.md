@@ -59,6 +59,11 @@ Copies a glob of files to a destination, flattening the output tree.
 To copy a folder without flattening, use `spawn('rsync ...')` instead.
 
 
+### watch(targetGlob, cb)
+
+Watch a folder using chokidar.
+
+
 ---
 
 _(The other functions inside here either dont belong here, or are not being used:
