@@ -45,7 +45,7 @@ function prepend(text) {
 
 
 exports.spawnBash = function(cmd, ...args) {
-    if (process.plaform !== 'win32') return exports.spawn(cmd, ...args)
+    if (process.platform !== 'win32') return exports.spawn(cmd, ...args)
     let escaped = cmd.replace(/"/g, '\"')
     return exports.spawn(`bash "${escaped}"`, ...args)
 }
