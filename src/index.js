@@ -5,6 +5,7 @@ const fs = require('fs')
 const yargs = require('yargs')
 const path = require('path')
 const glob = require('glob')
+const chokidar = require('chokidar')
 require('colors')
 
 /**
@@ -165,6 +166,12 @@ exports.requestP = function(reqparams) {
             res(body||{})
         })
     })
+}
+
+
+//watch shorthand
+exports.watch = function (target, event) {
+    chokidar.watch(target, _opts).on('all', event)
 }
 
 // -- the Runner -- //
