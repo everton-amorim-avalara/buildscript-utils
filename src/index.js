@@ -6,21 +6,14 @@ const yargs = require('yargs')
 const path = require('path')
 const glob = require('glob')
 const chokidar = require('chokidar')
+const promisify = require('promisify')
 require('colors')
 
 /**
  * Promisify: converts node-style callback to a promise
  */
-function _p( fn, ...args ) {
-    return new Promise( (resolve, reject) => {
-        fn( ...args , (err, ...result) => {
-            if (err) return reject(err)
-            resolve(result)
-        })
-    })
-}
-exports.promisify = _p
-exports._p = _p
+exports.promisify = promisify.promisify
+exports._p = promisify.promisify
 
 
 
@@ -43,12 +36,35 @@ function prepend(text) {
     })
 }
 
-
-exports.spawnBash = function(cmd, ...args) {
-    if (process.platform !== 'win32') return exports.spawn(cmd, ...args)
-    let escaped = cmd.replace(/"/g, '\"')
-    return exports.spawn(`bash "${escaped}"`, ...args)
+function tempDir() {
+    try {
+        fs.statSync('_temp')
+    } catch (err) {
+        fs.mkdirSync('_temp')
+    }
 }
+
+/*
+function createSh(cmd) {
+    tempDir()
+    const number = Math.ceil(Math.random() * 1000)
+    if (!String(cmd).endsWith(';')) cmd += ';'
+    let path = './_temp/' + number + '.sh'
+    fs.writeFileSync(path, cmd)
+    return path
+}
+
+exports.spawnBash = function (cmd, ...args) {
+    if (process.platform !== 'win32') return exports.spawn(cmd, ...args)
+    return Promise.resolve().then(() => {
+        let created = createSh(cmd)
+        return exports.spawn('/Program Files/Git/bin/sh.exe', [created], ...args)
+    }).then(resp => {
+        fs.unlinkSync(created)
+        return resp
+    })
+}
+*/
 
 /**
  * Spawns process, pipes to stdout and stderr, returns promise which
@@ -57,7 +73,9 @@ exports.spawnBash = function(cmd, ...args) {
 exports.spawn = function spawn(cmd, cwd, processCb) {
     console.log('spawn'.yellow, cmd)
     var isSudo = false
-    var split = cmd.split(' ')
+    var split
+    if (!Array.isArray(cmd)) split = cmd.split(' ')
+    else split = cmd
     if (split[0] == 'sudo') {
         isSudo = true
         split.unshift()
@@ -115,7 +133,7 @@ exports.copyFn = function copyFn( _srcglob, _dest ) {
     if (!Array.isArray(_srcglob)) _srcglob = [_srcglob]
     return _srcglob.reduce( (chain, eachglob) => {
         return chain.then(() => {
-            return exports._p( glob, eachglob ).then( files => {
+            return exports._p( glob, eachglob ).then( ([files]) => {
                 let all = files.map( f => {
                     let base = path.basename(f)
                     let src = path.resolve(f)
