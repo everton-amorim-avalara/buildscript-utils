@@ -44,6 +44,12 @@ function prepend(text) {
 }
 
 
+exports.spawnBash = function(cmd, ...args) {
+    if (process.plaform !== 'win32') return exports.spawn(cmd, ...args)
+    let escaped = cmd.replace(/"/g, '\"')
+    return exports.spawn(`bash "${escaped}"`, ...args)
+}
+
 /**
  * Spawns process, pipes to stdout and stderr, returns promise which
  * resolves when process finishes
