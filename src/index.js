@@ -36,6 +36,7 @@ function prepend(text) {
     })
 }
 
+/*
 function tempDir() {
     try {
         fs.statSync('_temp')
@@ -43,6 +44,7 @@ function tempDir() {
         fs.mkdirSync('_temp')
     }
 }
+*/
 
 /*
 function createSh(cmd) {
@@ -66,11 +68,16 @@ exports.spawnBash = function (cmd, ...args) {
 }
 */
 
+
+exports.spawnSilent = function (cmd, cwd, processCb) {
+    return exports.spawn(cmd, cwd, processCb, true)
+}
+
 /**
  * Spawns process, pipes to stdout and stderr, returns promise which
  * resolves when process finishes
  */
-exports.spawn = function spawn(cmd, cwd, processCb) {
+exports.spawn = function spawn(cmd, cwd, processCb, silent) {
     console.log('spawn'.yellow, cmd)
     var isSudo = false
     var split
@@ -105,13 +112,10 @@ exports.spawn = function spawn(cmd, cwd, processCb) {
         }
         let out = ps.stdout
         let err = ps.stderr
-        /*
-        if (!yargs.argv.o) {
-            out = out.pipe(prepend('> '))
-            err = err.pipe(prepend('err> '))
-        }*/
-        out.pipe(process.stdout)
-        err.pipe(process.stderr)
+        if (!silent) {
+            out.pipe(process.stdout)
+            err.pipe(process.stderr)
+        }
         ps.on('close', () => {
             console.log('end'.yellow, cmd)
             resolve()
