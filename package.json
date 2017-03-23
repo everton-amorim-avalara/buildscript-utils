@@ -26,5 +26,10 @@
     "sudo": "^1.0.3",
     "through2": "^2.0.3",
     "yargs": "^6.5.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.1",
+    "eslint": "^3.18.0",
+    "eslint-config-defaults": "^9.0.0"
   }
 }

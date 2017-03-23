@@ -1,4 +1,4 @@
-const through = require('through2')
+//const through = require('through2')
 const sudo = require('sudo')
 const cp = require('child_process')
 const fs = require('fs')
@@ -16,17 +16,7 @@ exports.promisify = promisify.promisify
 exports._p = promisify.promisify
 
 
-
-/**
- * Bind.
- */
-exports.bind = function bind( obj, fn ) {
-    return (...args) => {
-        obj[fn].apply(obj, args)
-    }
-}
-
-
+/*
 function prepend(text) {
     return through(function(chunk, enc, cb){
         let str = chunk.toString()
@@ -35,6 +25,7 @@ function prepend(text) {
         cb()
     })
 }
+*/
 
 /*
 function tempDir() {
@@ -76,6 +67,7 @@ exports.spawnSilent = function (cmd, cwd, processCb) {
 /**
  * Spawns process, pipes to stdout and stderr, returns promise which
  * resolves when process finishes
+ * @returns {Promise}
  */
 exports.spawn = function spawn(cmd, cwd, processCb, silent) {
     console.log('spawn'.yellow, cmd)
@@ -83,7 +75,7 @@ exports.spawn = function spawn(cmd, cwd, processCb, silent) {
     var split
     if (!Array.isArray(cmd)) split = cmd.split(' ')
     else split = cmd
-    if (split[0] == 'sudo') {
+    if (split[0] === 'sudo') {
         isSudo = true
         split.unshift()
     }
@@ -199,7 +191,7 @@ exports.requestP = function(reqparams) {
 
 //watch shorthand
 exports.watch = function (target, event) {
-    chokidar.watch(target, _opts).on('all', event)
+    chokidar.watch(target).on('all', event)
 }
 
 // -- the Runner -- //
