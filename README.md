@@ -53,6 +53,15 @@ var tasks = {
 bs.runTask(tasks)
 ```
 
+**windows**
+
+Sometimes we need to add `.cmd` extension in windows.
+
+I will do that if
+
+  - Path starts with `./node_modules/.bin`
+  - You append `@` to a path i.e. `npm@ install`
+
 ### copyFn( srcglob, dest ) : Promise<void>
 
 Copies a glob of files to a destination, flattening the output tree.
