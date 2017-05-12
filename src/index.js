@@ -82,7 +82,8 @@ exports.spawn = function spawn(cmd, cwd, processCb, silent) {
     var path = split[0]
     if (path.charAt(0) === '.') path = require('path').resolve(path)
     if (process.platform === 'win32') {
-        if (/node_modules\\\.bin/.test(path) && !String(path).endsWith('.cmd')) {
+        let check = /node_modules\\\.bin/.test(path) || !path.endsWith('.exe')
+        if (check && !String(path).endsWith('.cmd')) {
             path += '.cmd'
         }
     }
