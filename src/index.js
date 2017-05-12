@@ -87,10 +87,11 @@ exports.spawn = function spawn(cmd, cwd, processCb, silent) {
         forceCmd = true
     }
     if (process.platform === 'win32') {
-        let check = /node_modules\\\.bin/.test(path)
-        if (path.endsWith('.exe')) check = false
-        if (forceCmd) check = true
-        if (check && !String(path).endsWith('.cmd')) {
+        let addCmd = /node_modules\\\.bin/.test(path)
+        if (path.endsWith('.exe')) addCmd = false
+        if (forceCmd) addCmd = true
+        if (path.endsWith('.cmd')) addCmd = false
+        if (addCmd) {
             path += '.cmd'
         }
     }
